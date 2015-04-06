@@ -87,6 +87,48 @@ public class PersonDao {
         }
         return persons;
     }
+    
+      public List<Person> getAsc() {
+        List<Person> persons = null;
+        Session session = null;
+
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            persons = session.createQuery("from Person p order by age ASC").list();
+            session.getTransaction().commit();
+        } catch (Exception ex) {
+            if (session != null) {
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return persons;
+    }
+      
+        public List<Person> getDesc() {
+        List<Person> persons = null;
+        Session session = null;
+
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            persons = session.createQuery("from Person p order by id DESC").list();
+            session.getTransaction().commit();
+        } catch (Exception ex) {
+            if (session != null) {
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return persons;
+    }
 
     public boolean savePerson(Person person) {
         Session session = null;
@@ -116,11 +158,18 @@ public class PersonDao {
         Person person = null;
         Session session = null;
 
-
-        try {
-           Query query = session.createQuery("delete from Person where id = :ID");
-query.setParameter("id",id);
-int result = query.executeUpdate();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            
+           String hql = "delete from Person where id = :ID";
+ 
+Query query = session.createQuery(hql);
+query.setParameter("ID", id);
+ 
+int rowsAffected = query.executeUpdate();
+		
+     
+       
 
             
 //            
@@ -128,15 +177,7 @@ int result = query.executeUpdate();
 //            session.beginTransaction();
 //            person = (Person) session.createQuery("delete from Person where id = :ID").setParameter("ID", id).uniqueResult();
 //            session.getTransaction().commit();
-        } catch (Exception ex) {
-            if (session != null) {
-                session.getTransaction().rollback();
-            }
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
+ 
         
 
     }

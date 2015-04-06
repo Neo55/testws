@@ -51,7 +51,6 @@ public class Service {
     private PersonDao personDao = new PersonDao();
 
     //method which return a single person in xml
-
     @GET
     @Path("/getPersonByIdXML/{id}")
     @Produces(MediaType.APPLICATION_XML)
@@ -73,6 +72,20 @@ public class Service {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Person> getAllPersonsInJSONroo() {
         return personDao.getAllPersons();
+    }
+    
+       @GET
+    @Path("sort/ageAsc")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Person> getSortAgeAsc() {
+        return personDao.getAsc();
+    }
+    
+       @GET
+    @Path("sort/idDesc")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Person> getSortIdDesc() {
+        return personDao.getDesc();
     }
 
     //insert
@@ -111,18 +124,19 @@ public class Service {
 
     }
 
-   @DELETE
-@Path("del/{id}")
-public void deleteById(@PathParam("id") int id){
-
-}
-
-   @GET
-@Path("/getPage/{page}/{size}")
+    @DELETE
+    @Path("/del/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-public List<Person> deleteById( @PathParam("page") int page,  @PathParam("size") int size){
-  // return personDao.getAbsentDetails(page, size) + "\"%n\"";
-  return  personDao.getPaging(page, size);
-}
+    public void deleteById(@PathParam("id") int id) {
+
+    }
+
+    @GET
+    @Path("/getPage/{page}/{size}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Person> deleteById(@PathParam("page") int page, @PathParam("size") int size) {
+        // return personDao.getAbsentDetails(page, size) + "\"%n\"";
+        return personDao.getPaging(page, size);
+    }
 
 }

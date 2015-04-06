@@ -60,6 +60,10 @@ public class Person {
     public void setAge(int age) {
         this.age = age;
     }
+
+    public void executeUpdate() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }
