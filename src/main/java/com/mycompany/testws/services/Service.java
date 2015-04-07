@@ -7,6 +7,7 @@ package com.mycompany.testws.services;
 
 import com.mycompany.testws.dao.PersonDao;
 import com.mycompany.testws.model.Person;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 /**
@@ -130,19 +132,27 @@ public class Service {
         }
 
     }
-
+    
+        
     @DELETE
     @Path("/del/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String deleteById(@PathParam("id") int id) {
-        return "delee";
+        Person person = new Person();
+        person.setId(id);
+
+        if (!personDao.deleteById(person)){
+            return "{\"status\":\"ok\"}";
+        } else {
+            return "{\"status\":\"not ok\"}";
+        }
 
     }
 
     @GET
     @Path("/getPage/{page}/{size}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Person> deleteById(@PathParam("page") int page, @PathParam("size") int size) {
+    public List<Person> getPaging(@PathParam("page") int page, @PathParam("size") int size) {
         // return personDao.getAbsentDetails(page, size) + "\"%n\"";
         return personDao.getPaging(page, size);
     }

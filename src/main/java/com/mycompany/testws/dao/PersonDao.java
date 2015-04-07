@@ -175,21 +175,28 @@ public class PersonDao {
         return hasErrors;
     }
 
-    public String deleteById(int id) {
-        Person person = null;
+
+     public boolean deleteById(Person person) {
         Session session = null;
+        boolean hasErrors = false;
 
-        String hql = "delete from Person where id = :ID";
-        Query query = session.createQuery(hql);
-        query.setParameter("ID", id);
-        int rowCount = query.executeUpdate();
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.delete(person);
+            session.getTransaction().commit();
 
-        return "sssss";
+        } catch (Exception ex) {
+            if (session != null) {
+                session.getTransaction().rollback();
+            }
+            hasErrors = true;
 
-//            
-//            session = sessionFactory.openSession();
-//            session.beginTransaction();
-//            person = (Person) session.createQuery("delete from Person where id = :ID").setParameter("ID", id).uniqueResult();
-//            session.getTransaction().commit();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return hasErrors;
     }
 }
