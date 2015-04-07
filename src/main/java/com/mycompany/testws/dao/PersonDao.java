@@ -87,8 +87,8 @@ public class PersonDao {
         }
         return persons;
     }
-    
-      public List<Person> getAsc() {
+
+    public List<Person> getAsc() {
         List<Person> persons = null;
         Session session = null;
 
@@ -108,8 +108,8 @@ public class PersonDao {
         }
         return persons;
     }
-      
-        public List<Person> getDesc() {
+
+    public List<Person> getDesc() {
         List<Person> persons = null;
         Session session = null;
 
@@ -117,6 +117,27 @@ public class PersonDao {
             session = sessionFactory.openSession();
             session.beginTransaction();
             persons = session.createQuery("from Person p order by id DESC").list();
+            session.getTransaction().commit();
+        } catch (Exception ex) {
+            if (session != null) {
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return persons;
+    }
+    
+       public List<Person> getHeaders() {
+        List<Person> persons = null;
+        Session session = null;
+
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            persons = session.createQuery("select * from COLUMNS WHERE table_name='person'").list();
             session.getTransaction().commit();
         } catch (Exception ex) {
             if (session != null) {
@@ -154,31 +175,21 @@ public class PersonDao {
         return hasErrors;
     }
 
-    public void deleteById(int id) {
+    public String deleteById(int id) {
         Person person = null;
         Session session = null;
 
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            
-           String hql = "delete from Person where id = :ID";
- 
-Query query = session.createQuery(hql);
-query.setParameter("ID", id);
- 
-int rowsAffected = query.executeUpdate();
-		
-     
-       
+        String hql = "delete from Person where id = :ID";
+        Query query = session.createQuery(hql);
+        query.setParameter("ID", id);
+        int rowCount = query.executeUpdate();
 
-            
+        return "sssss";
+
 //            
 //            session = sessionFactory.openSession();
 //            session.beginTransaction();
 //            person = (Person) session.createQuery("delete from Person where id = :ID").setParameter("ID", id).uniqueResult();
 //            session.getTransaction().commit();
- 
-        
-
     }
 }

@@ -87,6 +87,13 @@ public class Service {
     public List<Person> getSortIdDesc() {
         return personDao.getDesc();
     }
+    
+     @GET
+    @Path("/getHeaders")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Person> getHeaders() {
+        return personDao.getHeaders();
+    }
 
     //insert
     @GET
@@ -127,7 +134,8 @@ public class Service {
     @DELETE
     @Path("/del/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void deleteById(@PathParam("id") int id) {
+    public String deleteById(@PathParam("id") int id) {
+        return "delee";
 
     }
 
