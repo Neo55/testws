@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
 @Entity
 @Table(name="PERSON")
 @XmlRootElement(name="person")
-@XmlType(propOrder={"id", "fullName", "age"})
+@XmlType(propOrder={"id", "fullName", "age", "city", "gender"})
 //@RestPageableQueries
 public class Person {
 
@@ -36,6 +36,10 @@ public class Person {
     private String fullName;
     @Column(name="AGE")
     private int age;
+    @Column(name="CITY")
+    private String city;
+    @Column(name="GENDER")
+    private String gender;
 @XmlElement
     public int getId() {
         return id;
@@ -60,6 +64,23 @@ public class Person {
     public void setAge(int age) {
         this.age = age;
     }
+@XmlElement
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+@XmlElement
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+    
 
     public void executeUpdate() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

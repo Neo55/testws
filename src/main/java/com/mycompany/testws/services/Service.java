@@ -52,88 +52,127 @@ public class Service {
 
     private PersonDao personDao = new PersonDao();
 
-    //method which return a single person in xml
-    @GET
-    @Path("/getPersonByIdXML/{id}")
-    @Produces(MediaType.APPLICATION_XML)
-    public Person getPersonByIdXML(@PathParam("id") int id) {
-        return personDao.getPersonById(id);
-    }
-
-    //return in JSON
-    @GET
-    @Path("/getPersonByIdJSON/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Person getPersonById(@PathParam("id") int id) {
-        return personDao.getPersonById(id);
-    }
-
-    //method return list all person
     @GET
     @Path("/getAllJSON")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Person> getAllPersonsInJSONroo() {
+    public List<Person> getAllPersonsInJSON() {
         return personDao.getAllPersons();
     }
-    
-       @GET
-    @Path("sort/ageAsc")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Person> getSortAgeAsc() {
-        return personDao.getAsc();
-    }
-    
-       @GET
-    @Path("sort/idDesc")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Person> getSortIdDesc() {
-        return personDao.getDesc();
-    }
-    
-     @GET
-    @Path("/getHeaders")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Person> getHeaders() {
-        return personDao.getHeaders();
+
+    @GET
+    @Path("/getAllXML")
+    @Produces(MediaType.APPLICATION_XML)
+    public List<Person> getAllPersonsInXML() {
+        return personDao.getAllPersons();
     }
 
-    //insert
     @GET
-    @Path("/insertPerson/{fullName}/{age}")
+    @Path("/add/{fullName}/{age}/{city}/{gender}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String saveNewPerson(@PathParam("fullName") String fullName, @PathParam("age") int age) {
+    public String saveNewPerson(@PathParam("fullName") String fullName, @PathParam("age") int age, @PathParam("city") String city, @PathParam("gender") String gender) {
         Person person = new Person();
 
         person.setFullName(fullName);
         person.setAge(age);
+        person.setCity(city);
+        person.setGender(gender);
 
         if (!personDao.savePerson(person)) {
-            return "{\"status\":\"ok\"}  id=" + person.getId();
+            return "Person create success   id=" + person.getId();
         } else {
-            return "{\"status\":\"not ok\"}";
+            return "error, check information for new person";
         }
-
     }
-    //update
 
     @GET
-    @Path("/insertPerson/{id}/{fullName}/{age}")
+    @Path("/update/{id}/{fullName}/{age}/{city}/{gender}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String updatePerson(@PathParam("id") int id, @PathParam("fullName") String fullName, @PathParam("age") int age) {
+    public String updatePerson(@PathParam("id") int id, @PathParam("fullName") String fullName, @PathParam("age") int age, @PathParam("city") String city, @PathParam("gender") String gender) {
         Person person = new Person();
         person.setId(id);
         person.setFullName(fullName);
         person.setAge(age);
+        person.setCity(city);
+        person.setGender(gender);
 
         if (!personDao.savePerson(person)) {
-            return "{\"status\":\"ok\"}";
+            return "Person update success";
         } else {
-            return "{\"status\":\"not ok\"}";
+            return "error, check new information about person";
         }
 
     }
-    
-        
+
+    @GET
+    @Path("/getByIdXML/{id}")
+    @Produces(MediaType.APPLICATION_XML)
+    public Person getPersonByIdXML(@PathParam("id") int id) {
+        return personDao.getById(id);
+    }
+
+    @GET
+    @Path("/getByCityXML/{city}")
+    @Produces(MediaType.APPLICATION_XML)
+    public Person getByCityXML(@PathParam("city") String city) {
+        return personDao.getByCity(city);
+    }
+
+    @GET
+    @Path("/getByGenderXML/{gender}")
+    @Produces(MediaType.APPLICATION_XML)
+    public Person getByGenderXML(@PathParam("gender") String gender) {
+        return personDao.getByGender(gender);
+    }
+
+    @GET
+    @Path("/getByIdJSON/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Person getPersonByIdJSON(@PathParam("id") int id) {
+        return personDao.getById(id);
+    }
+
+    @GET
+    @Path("/getByCityJSON/{city}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Person getByCityJSON(@PathParam("city") String city) {
+        return personDao.getByCity(city);
+    }
+
+    @GET
+    @Path("/getByGenderJSON/{gender}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Person getByGenderJSON(@PathParam("gender") String gender) {
+        return personDao.getByGender(gender);
+    }
+
+    @GET
+    @Path("sort/ageAscJSON")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Person> getSortAgeAsc() {
+        return personDao.getAsc();
+    }
+
+    @GET
+    @Path("sort/idDescJSON")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Person> getSortIdDesc() {
+        return personDao.getDesc();
+    }
+
+    @GET
+    @Path("sort/ageAscXML")
+    @Produces(MediaType.APPLICATION_XML)
+    public List<Person> getSortAgeAscXML() {
+        return personDao.getAsc();
+    }
+
+    @GET
+    @Path("sort/idDescXML")
+    @Produces(MediaType.APPLICATION_XML)
+    public List<Person> getSortIdDescXML() {
+        return personDao.getDesc();
+    }
+
     @DELETE
     @Path("/del/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -141,20 +180,35 @@ public class Service {
         Person person = new Person();
         person.setId(id);
 
-        if (!personDao.deleteById(person)){
-            return "{\"status\":\"ok\"}";
+        if (!personDao.deleteById(person)) {
+            return "Person delete success";
         } else {
-            return "{\"status\":\"not ok\"}";
+            return "Delete Error, check id of person";
         }
 
     }
 
     @GET
-    @Path("/getPage/{page}/{size}")
+    @Path("/getPageJSON/{page}/{size}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Person> getPaging(@PathParam("page") int page, @PathParam("size") int size) {
-        // return personDao.getAbsentDetails(page, size) + "\"%n\"";
         return personDao.getPaging(page, size);
     }
+    @GET
+    @Path("/getPageXML/{page}/{size}")
+    @Produces(MediaType.APPLICATION_XML)
+    public List<Person> getPagingXML(@PathParam("page") int page, @PathParam("size") int size) {
+        return personDao.getPaging(page, size);
+    }
+    
+    
+    @GET
+    @Path("/getHeaders")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Person> getHeaders() {
+        return personDao.getHeaders();
+    }
+
+   
 
 }
