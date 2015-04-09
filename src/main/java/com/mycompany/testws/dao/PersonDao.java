@@ -8,11 +8,16 @@ package com.mycompany.testws.dao;
 import com.mycompany.testws.model.Person;
 import com.mycompany.testws.util.HibernateUtil;
 import static com.mycompany.testws.util.HibernateUtil.getSessionFactory;
+import java.util.Iterator;
 import java.util.List;
 import static javassist.CtMethod.ConstParameter.string;
+import javax.mail.FetchProfile.Item;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.metadata.ClassMetadata;
 import org.jgroups.tests.perf.Test;
 
 /**
@@ -226,26 +231,31 @@ public class PersonDao {
 //session.getTransaction().commit();
     //    persons;
    
-    public List<Person> getHeaders() {
-        List<Person> persons = null;
-        Session session = null;
+    public String getHeaders() {
+        String z = null;
+        String w = null;
+        String[] e = null;
 
-        try {
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            persons = session.createQuery("from Person").list();
-            session.getTransaction().commit();
-        } catch (Exception ex) {
-            if (session != null) {
-                session.getTransaction().rollback();
-            }
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        return persons;
+       ClassMetadata classMetadata = sessionFactory.getClassMetadata(Person.class);
+        z = classMetadata.getEntityName();
+        e = classMetadata.getPropertyNames(); 
+        return z;
     }
 
+       public ClassMetadata getOperations() {
+        ClassMetadata z = null;
+        String w = null;
+        String[] e = null;
+        Session session = null;
+
+        
+       ClassMetadata classMetadata = sessionFactory.getClassMetadata(Person.class);
+        z = sessionFactory.getClassMetadata(Person.class);
+        e = classMetadata.getPropertyNames(); 
+     
+        return z;
+
+         
+    }
     
 }

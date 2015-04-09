@@ -203,12 +203,24 @@ public class Service {
     
     
     @GET
-    @Path("/getHeaders")
+    @Path("/getHeadersJSON")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Person> getHeaders() {
+    public String getHeaders() {
+        return personDao.getHeaders();
+    }
+    
+    @GET
+    @Path("/getHeadersXML")
+    @Produces(MediaType.APPLICATION_XML)
+    public String getHeadersXML() {
         return personDao.getHeaders();
     }
 
-   
+    @GET
+    @Path("/getOperationsJSON")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Class<? extends PersonDao> getOperationsJSON() {
+        return personDao.getClass();
+    }
 
 }
