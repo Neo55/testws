@@ -24,6 +24,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 /**
  *
@@ -66,23 +68,52 @@ public class Service {
         return personDao.getAllPersons();
     }
 
-    @GET
+    
+    @POST
     @Path("/add/{fullName}/{age}/{city}/{gender}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String saveNewPerson(@PathParam("fullName") String fullName, @PathParam("age") int age, @PathParam("city") String city, @PathParam("gender") String gender) {
-        Person person = new Person();
+   @Produces(MediaType.APPLICATION_JSON)
+        public String saveNewPerson(JSONObject person) throws JSONException {  
+        
+        JSONObject obj = new JSONObject();
 
-        person.setFullName(fullName);
-        person.setAge(age);
-        person.setCity(city);
-        person.setGender(gender);
 
-        if (!personDao.savePerson(person)) {
-            return "Person create success   id=" + person.getId();
-        } else {
+
+        obj.put("fullName",new String());
+        obj.put("age",new String());
+        obj.put("city",new String());
+        obj.put("gender",new String());
+        
+        
+      
+        person.put("person", obj);
+        obj.toString();
+
+        if (!personDao.savePerson(null)) {
+            return "Person create success   id=";
+                    
+        }
+        else {
             return "error, check information for new person";
         }
     }
+    
+//    @GET
+//    @Path("/add/{fullName}/{age}/{city}/{gender}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String saveNewPerson(@PathParam("fullName") String fullName, @PathParam("age") int age, @PathParam("city") String city, @PathParam("gender") String gender) {
+//        Person person = new Person();
+//
+//        person.setFullName(fullName);
+//        person.setAge(age);
+//        person.setCity(city);
+//        person.setGender(gender);
+//
+//        if (!personDao.savePerson(person)) {
+//            return "Person create success   id=" + person.getId();
+//        } else {
+//            return "error, check information for new person";
+//        }
+//    }
 
     @GET
     @Path("/update/{id}/{fullName}/{age}/{city}/{gender}")
