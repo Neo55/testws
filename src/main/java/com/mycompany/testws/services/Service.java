@@ -70,7 +70,7 @@ public class Service {
 
     
     @POST
-    @Path("/add/{fullName}/{age}/{city}/{gender}")
+    @Path("/add")
    @Produces(MediaType.APPLICATION_JSON)
         public String saveNewPerson(JSONObject person) throws JSONException {  
         
