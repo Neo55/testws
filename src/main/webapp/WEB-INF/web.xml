@@ -20,34 +20,7 @@
         <param-name>resteasy.servlet.mapping.prefix</param-name>
         <param-value>/</param-value>
     </context-param>
-    <error-page>
-        <error-code>400</error-code>
-        <location>/400error.html</location>
-    </error-page>
-    <error-page>
-        <error-code>404</error-code>
-        <location>/404error.html</location>
-    </error-page>
-    <error-page>
-        <error-code>401</error-code>
-        <location>/401error.html</location>
-    </error-page>
-    <error-page>
-        <error-code>405</error-code>
-        <location>/405error.html</location>
-    </error-page>
-    <error-page>
-        <error-code>408</error-code>
-        <location>/408.html</location>
-    </error-page>
-    <error-page>
-        <error-code>500</error-code>
-        <location>/500error.html</location>
-    </error-page>
-    <error-page>
-        <error-code>503</error-code>
-        <location>/503error.html</location>
-    </error-page>
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>TheTest Application</web-resource-name>

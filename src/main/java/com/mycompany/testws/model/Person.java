@@ -40,6 +40,7 @@ public class Person {
     private String city;
     @Column(name="GENDER")
     private String gender;
+
 @XmlElement
     public int getId() {
         return id;
@@ -82,9 +83,6 @@ public class Person {
     }
     
 
-    public void executeUpdate() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
     
 }

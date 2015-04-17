@@ -5,11 +5,13 @@
  */
 package com.mycompany.testws.dao;
 
+import com.mycompany.testws.log.Log;
 import com.mycompany.testws.model.Person;
 import com.mycompany.testws.util.HibernateUtil;
 import static com.mycompany.testws.util.HibernateUtil.getSessionFactory;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 import static javassist.CtMethod.ConstParameter.string;
 import javax.mail.FetchProfile.Item;
 import org.hibernate.Query;
@@ -19,13 +21,13 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.metadata.ClassMetadata;
 import org.jgroups.tests.perf.Test;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author FARHAD
  */
 public class PersonDao {
-
     SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     public List<Person> getAllPersons() {
@@ -37,9 +39,11 @@ public class PersonDao {
             session.beginTransaction();
             persons = session.createQuery("from Person p").list();
             session.getTransaction().commit();
+              Log.write("метод выполнен getAllPersons ");
         } catch (Exception ex) {
             if (session != null) {
                 session.getTransaction().rollback();
+                Log.write("Ошибка в методе getAllPersons ");
             }
         } finally {
             if (session != null) {
@@ -62,6 +66,7 @@ public class PersonDao {
         } catch (Exception ex) {
             if (session != null) {
                 session.getTransaction().rollback();
+                  Log.write("Ошибка в методе savePerson ");
             }
             hasErrors = true;
 
@@ -85,6 +90,7 @@ public class PersonDao {
         } catch (Exception ex) {
             if (session != null) {
                 session.getTransaction().rollback();
+                 Log.write("Ошибка в методе savePerson ");
             }
         } finally {
             if (session != null) {
@@ -106,6 +112,7 @@ public class PersonDao {
         } catch (Exception ex) {
             if (session != null) {
                 session.getTransaction().rollback();
+                 Log.write("Ошибка в методе getByCity ");
             }
         } finally {
             if (session != null) {
@@ -194,7 +201,6 @@ public class PersonDao {
                 session.getTransaction().rollback();
             }
             hasErrors = true;
-
         } finally {
             if (session != null) {
                 session.close();
@@ -220,8 +226,16 @@ public class PersonDao {
 
         Long countResults = (Long) countQuery.uniqueResult();
         Query selectQuery = session.createQuery("from Person p");
-        selectQuery.setFirstResult((pageNumber - 1) * pageSize);
-        selectQuery.setMaxResults(pageSize);
+       
+       if (pageSize<=Integer.parseInt(countQ)){
+           selectQuery.setFirstResult((pageNumber - 1) * pageSize);
+           selectQuery.setMaxResults(pageSize);
+       } else {
+       selectQuery.setFirstResult((pageNumber - 1) * Integer.parseInt(countQ));    
+       selectQuery.setMaxResults(Integer.parseInt(countQ));
+       }
+       
+        
 
         return selectQuery.list();
 
